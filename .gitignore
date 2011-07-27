@@ -1,0 +1,16 @@
+# Some people have yet to learn what a shadow build is.
+
+*.o
+*.pro.user
+*~
+*.log
+*.exe
+moc_*.cpp
+qrc_*.cpp
+ui_*.cpp
+Debug/
+Release/
+previsto
+Thumbs.db
+.DS_Store
+
