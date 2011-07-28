@@ -17,8 +17,6 @@ PreviewWindow::PreviewWindow(QWidget *parent)
     , _ui(new Ui::PreviewWindow)
 {
     _ui->setupUi(this);
-    _ui->documentView->setAcceptDrops(false);
-    this->setAcceptDrops(true);
 
     // Restore the window geometry from last time.
 
@@ -41,6 +39,7 @@ void PreviewWindow::setDocument(MarkdownDoc *document)
     }
 
     _doc = document;
+
     connect(_doc, SIGNAL(ready()), this, SLOT(onDocumentReady()));
     connect(_doc, SIGNAL(error(QString)), this, SLOT(onDocumentError(QString)));
 }

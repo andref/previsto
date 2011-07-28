@@ -11,6 +11,7 @@ MarkdownDoc::MarkdownDoc(QUrl inputUrl, QObject *parent)
     , _input(new QFile(inputUrl.toLocalFile()))
     , _process(new QProcess(this))
     , _data()
+    , _error(false)
 {
     // Prepare the process
 
@@ -32,21 +33,9 @@ MarkdownDoc::~MarkdownDoc()
 
 /// Markdown Processing ////////////////////////////////////////////////////////////////////////////
 
-/// TODO: This must go away!! Yikes!
+/// TODO: After we package, this must definitely go away.
 
 static const QString markdownPath = "/usr/bin/multimarkdown";
-
-static const QString HtmlProlog =
-    "<!doctype html>"
-    "<html>"
-    "<head>"
-    "<meta charset='utf-8'>"
-    "<link rel='stylesheet' href='qrc:///default.css'>"
-    "</head><body>";
-
-static const QString HtmlEpilog =
-    "</body>"
-    "</html>";
 
 void MarkdownDoc::update()
 {
@@ -59,20 +48,35 @@ void MarkdownDoc::update()
               << "--to" << "html"
               << _input->fileName();
 
+    _error = false;
     _process->start(markdownPath, arguments);
+}
+
+void MarkdownDoc::onProcessFinished(int, QProcess::ExitStatus exitStatus)
+{
+    // Drain the read channels. The Qt docs do not specify what happens
+    // to the channels when the process is started anew. Anyway, we
+
+    QByteArray output = _process->readAllStandardOutput();
+    _process->readAllStandardError();
+
+    // Well, something bad happened.
+
+    if (exitStatus == QProcess::CrashExit || _error) {
+        emit error();
+        return;
+    }
+
+    // Data is good, proceed.
+
+    _data = QString::fromUtf8(output);
+    emit ready();
 }
 
 void MarkdownDoc::onProcessError(QProcess::ProcessError)
 {
-    QString err = QString::fromUtf8(_process->readAllStandardError());
-    emit error("Failed to process the file.");
-}
-
-void MarkdownDoc::onProcessFinished(int, QProcess::ExitStatus)
-{
-    QByteArray output = _process->readAllStandardOutput();
-    _data = HtmlProlog + QString::fromUtf8(output) + HtmlEpilog;
-    emit ready();
+    _error = true;
+    emit error();
 }
 
 /// Properties /////////////////////////////////////////////////////////////////////////////////////

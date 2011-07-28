@@ -28,7 +28,7 @@ public slots:
 signals:
 
     void ready();
-    void error(const QString& message);
+    void error();
 
 private slots:
 
@@ -40,4 +40,5 @@ private:
     QFile* _input;
     QProcess* _process;
     QString _data;
+    bool _error;
 };
