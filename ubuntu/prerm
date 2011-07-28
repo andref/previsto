@@ -1,0 +1,6 @@
+#!/bin/sh
+set -e
+
+# Remove the icon from the user menu.
+xdg-desktop-menu uninstall --novendor /usr/share/applications/previsto.desktop
+

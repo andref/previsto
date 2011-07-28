@@ -22,3 +22,8 @@ RESOURCES += \
 
 OTHER_FILES += \
     resources/default.css
+
+# Installation ----------------------------------------------------------------
+
+target.path = $$OUT_PWD/root/usr/bin
+INSTALLS += target

@@ -5,9 +5,11 @@
 *~
 *.log
 *.exe
+*.deb
 moc_*.cpp
 qrc_*.cpp
 ui_*.cpp
+.build*/
 Debug/
 Release/
 previsto

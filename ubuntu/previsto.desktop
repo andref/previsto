@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=Previsto
+GenericName=Previsto
+Comment=Preview Markdown files
+Comment[pt_BR]=Visualizar arquivos Markdown
+Exec=previsto %u
+Terminal=false
+Type=Application
+StartupNotify=false
+MimeType=text/x-markdown;text/plain;
+Icon=previsto
+Categories=Utility
+
