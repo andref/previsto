@@ -23,7 +23,6 @@ PreviewWindowController::PreviewWindowController(QObject *parent)
     // Wire up the watcher
 
     connect(_watcher, SIGNAL(fileChanged(QString)), this, SLOT(onDocumentPathChanged(QString)));
-
 }
 
 /**
@@ -97,4 +96,6 @@ void PreviewWindowController::onDocumentPathChanged(const QString& path)
     if (!paths.contains(path)) {
         _watcher->addPath(_doc->inputUrl().toLocalFile());
     }
+
+    // TODO: Handle the case when the document is deleted.
 }

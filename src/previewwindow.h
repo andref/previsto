@@ -23,7 +23,6 @@ public:
     explicit PreviewWindow(QWidget* parent = 0);
     ~PreviewWindow();
 
-
     Q_PROPERTY(MarkdownDoc* document READ document WRITE setDocument)
     MarkdownDoc* document() const;
     Q_SLOT void setDocument(MarkdownDoc* document);
@@ -41,6 +40,7 @@ protected:
 
 private slots:
 
+    void onWebpageLinkClicked(const QUrl &url);
     void onDocumentReady();
     void onDocumentError();
 
@@ -48,4 +48,5 @@ private:
 
     MarkdownDoc* _doc;
     Ui::PreviewWindow *_ui;
+    bool _newDoc;
 };
