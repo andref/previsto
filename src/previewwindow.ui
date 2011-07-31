@@ -36,8 +36,81 @@
    <item>
     <widget class="QStackedWidget" name="stack">
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
+     <widget class="QWidget" name="welcomePage">
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLabel" name="label_3">
+           <property name="minimumSize">
+            <size>
+             <width>205</width>
+             <height>205</height>
+            </size>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>205</width>
+             <height>205</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>14</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">background-image: url(:/images/drop-here.png);
+</string>
+           </property>
+           <property name="text">
+            <string>Drop Markdown files here.</string>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="margin">
+            <number>25</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
      <widget class="QWidget" name="previewPage">
       <layout class="QVBoxLayout" name="verticalLayout_2">
        <property name="spacing">
@@ -94,6 +167,19 @@
           </spacer>
          </item>
          <item>
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string/>
+           </property>
+           <property name="pixmap">
+            <pixmap resource="resources/previsto.qrc">:/images/burn.png</pixmap>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QLabel" name="label">
            <property name="minimumSize">
             <size>
@@ -117,6 +203,9 @@
            <property name="text">
             <string>Sorry, an error occurred…</string>
            </property>
+           <property name="alignment">
+            <set>Qt::AlignCenter</set>
+           </property>
           </widget>
          </item>
          <item>
@@ -134,7 +223,7 @@
             </size>
            </property>
            <property name="text">
-            <string>Sorry, an error occurred…</string>
+            <string/>
            </property>
            <property name="wordWrap">
             <bool>true</bool>

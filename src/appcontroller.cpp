@@ -45,9 +45,12 @@ void AppController::onUrlsDropped(QList<QUrl> urls)
 {
     QUrl url = urls.takeFirst();
 
-    // Stop tracking changes to the current document.
-
     if (_doc) {
+        if (url == _doc->inputUrl()) {
+            return;
+        }
+
+        // Stop tracking changes to the current document.
         _watcher->removePath(_doc->inputUrl().toLocalFile());
     }
 

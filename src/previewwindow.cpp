@@ -61,7 +61,7 @@ PreviewWindow::PreviewWindow(QWidget *parent)
     , _firstTime(false)
 {
     _ui->setupUi(this);
-    _ui->stack->setCurrentWidget(_ui->previewPage);
+    _ui->stack->setCurrentWidget(_ui->welcomePage);
 
     // We will handle all link clicks since we are *not* a web browser.
 
