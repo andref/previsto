@@ -32,7 +32,7 @@ MarkdownDoc::~MarkdownDoc()
 // at the appropriate place.
 
 #if defined QT_NO_DEBUG
-static const QString markdownPath = "/usr/local/lib/previsto/multimarkdown";
+static const QString markdownPath = "/usr/lib/previsto/multimarkdown";
 #else
 static const QString markdownPath = "dist/peg-multimarkdown/multimarkdown";
 #endif
