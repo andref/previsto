@@ -2,6 +2,13 @@
 
 set -e
 
+# Qt build tools must be available.
+
+if [[ $(which qmake) == '' ]]; then
+	echo "Sorry, qmake must be in the PATH."
+	exit 1
+fi
+
 TIMESTAMP=$(date -u +%Y%m%d-%H%M%S)
 BUILDDIR="$(pwd)/.build-$TIMESTAMP"
 JOBS=$(cat /proc/cpuinfo | grep processor | wc -l)
@@ -36,7 +43,7 @@ cp ../ubuntu/prerm root/DEBIAN
 
 # Copy the multimarkdown binary
 
-cp ../dist/peg-multimarkdown/multimarkdown root/usr/lib/previsto
+install -s ../dist/peg-multimarkdown/multimarkdown root/usr/lib/previsto
 
 # Copy xdg files
 
