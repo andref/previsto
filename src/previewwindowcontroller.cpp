@@ -1,3 +1,4 @@
+#include <QApplication>
 #include <QDebug>
 #include <QFileSystemWatcher>
 
@@ -32,6 +33,15 @@ void PreviewWindowController::start()
 {
     _doc = 0;
     _window->show();
+
+    // Check if an URL was passed via arguments.
+
+    QStringList args = QApplication::instance()->arguments();
+    if (args.size() > 1) {
+        QList<QUrl> urls;
+        urls << QUrl::fromLocalFile(args.at(1));
+        onUrlsDropped(urls);
+    }
 }
 
 /**
