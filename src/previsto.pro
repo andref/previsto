@@ -7,12 +7,12 @@ SOURCES += \
     main.cpp\
     previewwindow.cpp \
     markdowndoc.cpp \
-    previewwindowcontroller.cpp
+    appcontroller.cpp
 
 HEADERS += \
     previewwindow.h \
     markdowndoc.h \
-    previewwindowcontroller.h
+    appcontroller.h
 
 FORMS   += \
     previewwindow.ui
@@ -21,9 +21,10 @@ RESOURCES += \
     resources/previsto.qrc
 
 OTHER_FILES += \
-    resources/default.css
+    resources/Default.css \
+    notes.markdown
 
-# Installation ----------------------------------------------------------------
+# Installation -------------------------------------------------------------------------------------
 
 target.path = $$OUT_PWD/root/usr/bin
 INSTALLS += target

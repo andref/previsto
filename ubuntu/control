@@ -3,11 +3,12 @@ Version: 0.1
 Section: misc
 Priority: optional
 Architecture: i386
+Installed-Size: 325
 Depends: libc6, libqt4-core (>= 4.6), libqt4-gui (>= 4.6), libqt4-webkit (>= 4.6), xdg-utils
 Maintainer: André Fillipe O. Silva <andre.fillipe@gmail.com>
 Homepage: https://www.github.com/andref/previsto
-Description: A Markdown preview app
+Description: Previsto is a Markdown preview app
  Instead of fiddling with your favorite text editor to
  make it preview markdown files, use this app. Just 
- drop any markdown file on the Previsto Window.
+ drop any markdown file on the Previsto window.
 

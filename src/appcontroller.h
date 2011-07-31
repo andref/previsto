@@ -5,21 +5,23 @@
 #include <QList>
 #include <QUrl>
 #include <QObject>
+#include <QSharedPointer>
+
+#include "markdowndoc.h"
 
 class QFileSystemWatcher;
 class PreviewWindow;
-class MarkdownDoc;
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-class PreviewWindowController
+class AppController
         : public QObject
 {
     Q_OBJECT
 
 public:
 
-    explicit PreviewWindowController(QObject* parent = 0);
+    explicit AppController(QObject* parent = 0);
 
 public slots:
 
@@ -28,15 +30,11 @@ public slots:
 private slots:
 
     void onUrlsDropped(QList<QUrl> urls);
-    void onDocumentPathChanged(const QString& path);
-
-signals:
-
-    void documentChanged(MarkdownDoc* newDocument);
+    void onDocumentChanged(const QString& path);
 
 private:
 
     PreviewWindow* _window;
-    MarkdownDoc* _doc;
+    QSharedPointer<MarkdownDoc> _doc;
     QFileSystemWatcher* _watcher;
 };

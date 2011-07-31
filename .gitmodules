@@ -1,0 +1,3 @@
+[submodule "dist/peg-multimarkdown"]
+	path = dist/peg-multimarkdown
+	url = git://github.com/fletcher/peg-multimarkdown.git

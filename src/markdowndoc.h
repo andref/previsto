@@ -10,8 +10,16 @@
 class MarkdownDoc : public QObject
 {
     Q_OBJECT
+    Q_ENUMS(Error)
 
 public:
+
+    enum Error {
+        ProcessorNotAvailable,
+        DocumentNotFound,
+        DocumentNotReadable,
+        ProcessorFailed
+    };
 
     explicit MarkdownDoc(QUrl inputUrl, QObject *parent = 0);
     ~MarkdownDoc();
@@ -28,12 +36,12 @@ public slots:
 signals:
 
     void ready();
-    void error();
+    void error(MarkdownDoc::Error cause);
 
 private slots:
 
-    void onProcessFinished(int,QProcess::ExitStatus);
-    void onProcessError(QProcess::ProcessError);
+    void onProcessFinished(int, QProcess::ExitStatus);
+    void onProcessError();
 
 private:
 

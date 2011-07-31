@@ -1,11 +1,17 @@
 #include <QtGui/QApplication>
+#include <QTextCodec>
 
-#include "previewwindowcontroller.h"
+#include "appcontroller.h"
 #include "markdowndoc.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
+
+    // Initialize text processing.
+
+    QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
+    QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
 
     // Set the application metainfo.
 
@@ -16,7 +22,7 @@ int main(int argc, char *argv[])
 
     // Start the window controller.
 
-    PreviewWindowController controller;
+    AppController controller;
     controller.start();
 
     // And off we go.
