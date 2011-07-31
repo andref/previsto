@@ -1,6 +1,9 @@
 <RCC>
     <qresource prefix="/">
-        <file>images/settings.png</file>
         <file>Default.css</file>
+        <file>icons/previsto-16.png</file>
+        <file>icons/previsto-32.png</file>
+        <file>icons/previsto-64.png</file>
+        <file>icons/previsto-128.png</file>
     </qresource>
 </RCC>

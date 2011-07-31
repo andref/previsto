@@ -20,11 +20,7 @@ MarkdownDoc::MarkdownDoc(QUrl inputUrl, QObject *parent)
     connect(_process, SIGNAL(finished(int,QProcess::ExitStatus)),
             SLOT(onProcessFinished(int,QProcess::ExitStatus)));
     connect(_process, SIGNAL(error(QProcess::ProcessError)),
-            SLOT(onProcessError(QProcess::ProcessError)));
-
-    // Trigger the first update.
-
-    update();
+            SLOT(onProcessError()));
 }
 
 MarkdownDoc::~MarkdownDoc()
@@ -41,11 +37,35 @@ static const QString markdownPath = "/usr/local/lib/previsto/multimarkdown";
 static const QString markdownPath = "dist/peg-multimarkdown/multimarkdown";
 #endif
 
-
+/// Update the document. The update can only proceed if the processor is available
+/// and the document exists and is readable. If an update is already in progress,
+/// this operation has no effect.
 void MarkdownDoc::update()
 {
-    if (_process->state() == QProcess::Running) {
+    if (_process->state() != QProcess::NotRunning) {
         return;
+    }
+
+    if (!QFile::exists(markdownPath)) {
+        emit error(MarkdownDoc::ProcessorNotAvailable);
+        return;
+    }
+
+    if (!QFile::permissions(markdownPath) & QFile::ExeUser) {
+        emit error(MarkdownDoc::ProcessorNotAvailable);
+        return;
+    }
+
+    if (!_input->exists()) {
+        emit error(MarkdownDoc::DocumentNotFound);
+        return;
+    }
+
+    if (!_input->isReadable()) {
+        if (!_input->setPermissions(_input->permissions() | QFile::ReadUser)) {
+            emit error(MarkdownDoc::DocumentNotReadable);
+            return;
+        }
     }
 
     QStringList arguments;
@@ -57,7 +77,7 @@ void MarkdownDoc::update()
     _process->start(markdownPath, arguments);
 }
 
-void MarkdownDoc::onProcessFinished(int, QProcess::ExitStatus exitStatus)
+void MarkdownDoc::onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
     // Drain the read channels. The Qt docs do not specify what happens
     // to the channels when the process is started anew. Anyway, we
@@ -65,10 +85,11 @@ void MarkdownDoc::onProcessFinished(int, QProcess::ExitStatus exitStatus)
     QByteArray output = _process->readAllStandardOutput();
     _process->readAllStandardError();
 
-    // Well, something bad happened.
+    // Something bad happenned and we cannot trust that the
+    // output is what we want.
 
-    if (exitStatus == QProcess::CrashExit || _error) {
-        emit error();
+    if (exitCode != 0 || exitStatus == QProcess::CrashExit || _error) {
+        emit error(MarkdownDoc::ProcessorFailed);
         return;
     }
 
@@ -78,13 +99,14 @@ void MarkdownDoc::onProcessFinished(int, QProcess::ExitStatus exitStatus)
     emit ready();
 }
 
-void MarkdownDoc::onProcessError(QProcess::ProcessError)
+/// Handle process failures
+void MarkdownDoc::onProcessError()
 {
     _process->readAllStandardOutput();
     _process->readAllStandardError();
 
     _error = true;
-    emit error();
+    emit error(MarkdownDoc::ProcessorFailed);
 }
 
 /// Properties /////////////////////////////////////////////////////////////////////////////////////

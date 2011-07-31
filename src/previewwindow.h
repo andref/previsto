@@ -3,8 +3,9 @@
 #include <QList>
 #include <QUrl>
 #include <QWidget>
+#include <QSharedPointer>
 
-class MarkdownDoc;
+#include "markdowndoc.h"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -23,13 +24,11 @@ public:
     explicit PreviewWindow(QWidget* parent = 0);
     ~PreviewWindow();
 
-    Q_PROPERTY(MarkdownDoc* document READ document WRITE setDocument)
-    MarkdownDoc* document() const;
-    Q_SLOT void setDocument(MarkdownDoc* document);
+    void setDocument(QSharedPointer<MarkdownDoc> document);
 
 signals:
 
-    void urlsAccepted(const QList<QUrl>& uriList);
+    void urlsDropped(const QList<QUrl>& uriList);
 
 protected:
 
@@ -42,11 +41,11 @@ private slots:
 
     void onWebpageLinkClicked(const QUrl &url);
     void onDocumentReady();
-    void onDocumentError();
+    void onDocumentError(MarkdownDoc::Error cause);
 
 private:
 
-    MarkdownDoc* _doc;
+    QSharedPointer<MarkdownDoc> _doc;
     Ui::PreviewWindow *_ui;
-    bool _newDoc;
+    bool _firstTime;
 };

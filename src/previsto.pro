@@ -7,12 +7,12 @@ SOURCES += \
     main.cpp\
     previewwindow.cpp \
     markdowndoc.cpp \
-    previewwindowcontroller.cpp
+    appcontroller.cpp
 
 HEADERS += \
     previewwindow.h \
     markdowndoc.h \
-    previewwindowcontroller.h
+    appcontroller.h
 
 FORMS   += \
     previewwindow.ui
@@ -21,7 +21,8 @@ RESOURCES += \
     resources/previsto.qrc
 
 OTHER_FILES += \
-    resources/Default.css
+    resources/Default.css \
+    notes.markdown
 
 # Installation -------------------------------------------------------------------------------------
 
