@@ -41,7 +41,7 @@ void PreviewWindow::setDocument(MarkdownDoc *document)
     _doc = document;
 
     connect(_doc, SIGNAL(ready()), this, SLOT(onDocumentReady()));
-    connect(_doc, SIGNAL(error(QString)), this, SLOT(onDocumentError(QString)));
+    connect(_doc, SIGNAL(error()), this, SLOT(onDocumentError()));
 }
 
 MarkdownDoc* PreviewWindow::document() const
@@ -56,9 +56,8 @@ void PreviewWindow::onDocumentReady()
     _ui->documentView->page()->mainFrame()->setScrollPosition(currentScroll);
 }
 
-void PreviewWindow::onDocumentError(const QString &error)
+void PreviewWindow::onDocumentError()
 {
-    Q_UNUSED(error); // Really?
 }
 
 //// Drag and Drop /////////////////////////////////////////////////////////////////////////////////

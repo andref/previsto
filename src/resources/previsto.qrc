@@ -1,6 +1,6 @@
 <RCC>
     <qresource prefix="/">
-        <file>default.css</file>
         <file>images/settings.png</file>
+        <file>Default.css</file>
     </qresource>
 </RCC>

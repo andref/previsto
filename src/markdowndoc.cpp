@@ -22,20 +22,25 @@ MarkdownDoc::MarkdownDoc(QUrl inputUrl, QObject *parent)
     connect(_process, SIGNAL(error(QProcess::ProcessError)),
             SLOT(onProcessError(QProcess::ProcessError)));
 
-    // Open our temporary file.
+    // Trigger the first update.
 
     update();
 }
 
 MarkdownDoc::~MarkdownDoc()
-{
-}
+{}
 
 /// Markdown Processing ////////////////////////////////////////////////////////////////////////////
 
-/// TODO: After we package, this must definitely go away.
+// The markdown processor is installed for us in the release version
+// at the appropriate place.
 
-static const QString markdownPath = "/usr/bin/multimarkdown";
+#if defined QT_NO_DEBUG
+static const QString markdownPath = "/usr/local/lib/previsto/multimarkdown";
+#else
+static const QString markdownPath = "dist/peg-multimarkdown/multimarkdown";
+#endif
+
 
 void MarkdownDoc::update()
 {
@@ -75,6 +80,9 @@ void MarkdownDoc::onProcessFinished(int, QProcess::ExitStatus exitStatus)
 
 void MarkdownDoc::onProcessError(QProcess::ProcessError)
 {
+    _process->readAllStandardOutput();
+    _process->readAllStandardError();
+
     _error = true;
     emit error();
 }

@@ -42,7 +42,7 @@ protected:
 private slots:
 
     void onDocumentReady();
-    void onDocumentError(const QString& error);
+    void onDocumentError();
 
 private:
 

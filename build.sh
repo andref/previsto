@@ -3,16 +3,23 @@
 set -e
 
 TIMESTAMP=$(date -u +%Y%m%d-%H%M%S)
-BUILDDIR=".build-$TIMESTAMP"
+BUILDDIR="$(pwd)/.build-$TIMESTAMP"
 JOBS=$(cat /proc/cpuinfo | grep processor | wc -l)
 
 # Create our make believe fs root
 
 mkdir -p $BUILDDIR/root/DEBIAN
 mkdir -p $BUILDDIR/root/usr/bin
+mkdir -p $BUILDDIR/root/usr/lib/previsto
 mkdir -p $BUILDDIR/root/usr/share/doc/previsto
 mkdir -p $BUILDDIR/root/usr/share/applications
 mkdir -p $BUILDDIR/root/usr/share/icons/hicolor
+
+# Build the multimarkdown app
+
+pushd dist/peg-multimarkdown
+make --jobs=$JOBS
+popd
 
 # Build the application
 
@@ -26,6 +33,10 @@ make install
 cp ../ubuntu/control root/DEBIAN
 cp ../ubuntu/postinst root/DEBIAN
 cp ../ubuntu/prerm root/DEBIAN
+
+# Copy the multimarkdown binary
+
+cp ../dist/peg-multimarkdown/multimarkdown root/usr/lib/previsto
 
 # Copy xdg files
 

@@ -21,9 +21,9 @@ RESOURCES += \
     resources/previsto.qrc
 
 OTHER_FILES += \
-    resources/default.css
+    resources/Default.css
 
-# Installation ----------------------------------------------------------------
+# Installation -------------------------------------------------------------------------------------
 
 target.path = $$OUT_PWD/root/usr/bin
 INSTALLS += target
