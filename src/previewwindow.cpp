@@ -44,8 +44,7 @@ static const QString HtmlProlog =
     "<html>"
     "<head>"
     "<meta charset='utf-8'>"
-    "<link rel='stylesheet' href='file:///home/andre/dev/previsto/src/resources/Default.css'>"
-//    "<link rel='stylesheet' href='qrc:///Default.css'>"
+    "<link rel='stylesheet' href='qrc:///Default.css'>"
     "</head>"
     "<body>";
 
