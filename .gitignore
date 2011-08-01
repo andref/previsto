@@ -12,7 +12,6 @@ ui_*.cpp
 .build*/
 Debug/
 Release/
-previsto
 Thumbs.db
 .DS_Store
 
