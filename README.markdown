@@ -2,7 +2,7 @@
 
 Instead of fiddling with your favorite text editor to
 make it preview [Markdown][1] files, use this app. Just 
-drop any markdown `file on` the Previsto Window.
+drop any markdown file on the Previsto Window.
 
 ## Features
 
