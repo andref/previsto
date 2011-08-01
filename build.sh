@@ -11,20 +11,22 @@ fi
 
 TIMESTAMP=$(date -u +%Y%m%d-%H%M%S)
 BUILDDIR="$(pwd)/.build-$TIMESTAMP"
-JOBS=$(cat /proc/cpuinfo | grep processor | wc -l)
+JOBS=$(cat /proc/cpuinfo | grep "^processor" | wc -l)
+VERSION=$(git describe --tags)
 
-# Create our make believe fs root
+if [[ VERSION == '' ]]; then
+    VERSION=$TIMESTAMP
+fi
 
-mkdir -p $BUILDDIR/root/DEBIAN
-mkdir -p $BUILDDIR/root/usr/bin
-mkdir -p $BUILDDIR/root/usr/lib/previsto
-mkdir -p $BUILDDIR/root/usr/share/doc/previsto
-mkdir -p $BUILDDIR/root/usr/share/applications
-mkdir -p $BUILDDIR/root/usr/share/icons/hicolor
+# Copy the Debian package environment
+
+mkdir -p $BUILDDIR/root
+cp -r ubuntu/* $BUILDDIR/root
 
 # Build the multimarkdown app
 
 pushd dist/peg-multimarkdown
+make -i clean
 make --jobs=$JOBS
 popd
 
@@ -35,29 +37,18 @@ qmake CONFIG+=release ../src/previsto.pro
 make --jobs=$JOBS
 make install
 
-# Copy the Debian control files
-
-cp ../ubuntu/control root/DEBIAN
-cp ../ubuntu/postinst root/DEBIAN
-cp ../ubuntu/prerm root/DEBIAN
-
 # Copy the multimarkdown binary
 
 install -s ../dist/peg-multimarkdown/multimarkdown root/usr/lib/previsto
 
-# Copy xdg files
-
-cp ../ubuntu/copyright root/usr/share/doc/previsto
-cp ../ubuntu/changelog root/usr/share/doc/previsto
-cp ../ubuntu/previsto.desktop root/usr/share/applications
-cp -r ../ubuntu/icons/* root/usr/share/icons/hicolor
+# Compress the changelog
 
 gzip --best root/usr/share/doc/previsto/changelog
 
 # Create the Debian package
 
 fakeroot dpkg-deb --build root
-mv root.deb ../previsto-$TIMESTAMP.deb
+mv root.deb ../previsto-$VERSION.deb
 
 popd
 

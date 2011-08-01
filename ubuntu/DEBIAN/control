@@ -3,7 +3,7 @@ Version: 0.1
 Section: misc
 Priority: optional
 Architecture: i386
-Installed-Size: 325
+Installed-Size: 771
 Depends: libc6, libqt4-core (>= 4.6), libqt4-gui (>= 4.6), libqt4-webkit (>= 4.6), xdg-utils
 Maintainer: André Fillipe O. Silva <andre.fillipe@gmail.com>
 Homepage: https://www.github.com/andref/previsto

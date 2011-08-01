@@ -1,17 +1,22 @@
 # Previsto -- A Markdown preview app
 
 Instead of fiddling with your favorite text editor to
-make it preview markdown files, use this app. Just 
-drop any markdown file on the Previsto Window.
+make it preview [Markdown][1] files, use this app. Just 
+drop any markdown `file on` the Previsto Window.
 
-## Missing Features
+## Features
 
-Soon to come, however.
+Previsto is meant to be simple. Here is the feature
+list to prove it:
 
-- Error handling!
-- Feedback on drag-and-drop.
-- Improve the default ugly stylesheet
-- Allow multiple stylesheets (via drag and drop?)
-- Save to HTML/PDF?
-- Allow dropping text/simple
+- Preview updates when the file is saved.
+- Drag files from any program into the window to preview.
+- Open Markdown files from nautilus using the context menu.
 
+## Dependencies
+
+Previsto is a [Qt][2] app and needs Qt version 4.6 or later
+to build.
+
+[1]: http://daringfireball.net/projects/markdown
+[2]: http://qt.nokia.com
