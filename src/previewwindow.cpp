@@ -63,7 +63,7 @@ PreviewWindow::PreviewWindow(QWidget *parent)
     _ui->setupUi(this);
     _ui->stack->setCurrentWidget(_ui->welcomePage);
 
-    // We will handle all link clicks since we are *not* a web browser.
+    // We will handle external links since we are *not* a web browser.
 
     connect(_ui->documentView, SIGNAL(linkClicked(QUrl)),
             this, SLOT(onWebpageLinkClicked(QUrl)));
@@ -102,19 +102,32 @@ void PreviewWindow::setDocument(QSharedPointer<MarkdownDoc> document)
 void PreviewWindow::onDocumentReady()
 {
     QPoint currentScroll = _ui->documentView->page()->mainFrame()->scrollPosition();
+    QSize docSize = _ui->documentView->page()->mainFrame()->contentsSize();
+    QSize viewSize = _ui->documentView->size();
+
+    // Check if the viewport is at the bottom of the document. If it is, we will "glue" the
+    // viewport there because the document might have shrunk or grown.
+
+    bool atBottom = currentScroll.y() >= docSize.height() - viewSize.height();
 
     // Prepare the data.
 
     QString html = HtmlProlog + _doc->data() + HtmlEpilog;
 
-    _ui->documentView->setHtml(html);
-    _ui->documentView->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
+    _ui->documentView->setHtml(html, _doc->inputUrl());
+    _ui->documentView->page()->setLinkDelegationPolicy(QWebPage::DelegateExternalLinks);
 
     // Restore the scroll position of the internal frame so that it
     // doesn't jump back to the top. But do that only if this is the same
     // document.
 
     if (!_firstTime) {
+
+        if (atBottom) {
+            QSize newDocSize = _ui->documentView->page()->mainFrame()->contentsSize();
+            currentScroll.setY(newDocSize.height() - viewSize.height());
+        }
+
         _ui->documentView->page()->mainFrame()->setScrollPosition(currentScroll);
     }
     else {
