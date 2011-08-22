@@ -1,5 +1,14 @@
+previsto (0.2) lucid; urgency=low
+
+  * Preserves scroll position in a more intuitive way.
+  * Handle anchor links properly, as well as images.
+  * Prettier footnotes.
+
+ -- André Fillipe O. Silva <andre.fillipe@gmail.com>  Mon, 22 Jul 2011 16:13:00 -0300
+
 previsto (0.1) lucid; urgency=low
 
   * Initial release
 
  -- André Fillipe O. Silva <andre.fillipe@gmail.com>  Thu, 28 Jul 2011 10:46:40 -0300
+
