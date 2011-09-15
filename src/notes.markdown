@@ -8,6 +8,8 @@ These are missing:
 
 - Switch stylesheets (light, dark, sans, serif)
 - An about box...
+- Print the document
+- Export to PDF (**with pagination**, unlike Marked!)
 
 Error Checking
 --------------

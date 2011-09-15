@@ -1,21 +1,24 @@
 QT      += core gui webkit
 TARGET   = previsto
 TEMPLATE = app
-VERSION  = 0.1dev
+VERSION  = 0.3
 
 SOURCES += \
     main.cpp\
     previewwindow.cpp \
     markdowndoc.cpp \
-    appcontroller.cpp
+    appcontroller.cpp \
+    aboutwindow.cpp
 
 HEADERS += \
     previewwindow.h \
     markdowndoc.h \
-    appcontroller.h
+    appcontroller.h \
+    aboutwindow.h
 
 FORMS   += \
-    previewwindow.ui
+    previewwindow.ui \
+    aboutwindow.ui
 
 RESOURCES += \
     resources/previsto.qrc

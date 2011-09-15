@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QList>
+#include <QMenu>
 #include <QUrl>
-#include <QWidget>
 #include <QSharedPointer>
+#include <QWidget>
 
 #include "markdowndoc.h"
 
@@ -43,7 +44,14 @@ private slots:
     void onDocumentReady();
     void onDocumentError(MarkdownDoc::Error cause);
 
+    void onCopy();
+    void onRefresh();
+    void onAbout();
+    void onSettings();
+
 private:
+
+    void configureMenu();
 
     QSharedPointer<MarkdownDoc> _doc;
     Ui::PreviewWindow *_ui;

@@ -9,6 +9,8 @@
 #include "ui_previewwindow.h"
 #include "markdowndoc.h"
 #include "previewwindow.h"
+#include "aboutwindow.h"
+
 
 //// Error Messages ////////////////////////////////////////////////////////////////////////////////
 
@@ -54,6 +56,18 @@ static const QString HtmlEpilog =
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// Construct a preview window. This is the main application Window
+/// for Previsto. The window has three pages:
+///
+/// - Welcome: invites the user to drop a file
+/// - Error: displayed when something goes wrong
+/// - Preview: contains the document preview
+///
+/// When created, the preview window displayes the "welcome" page.
+///
+/// @param parent
+///     The owner widget. This is generally `0`, because this is a
+///     top level window.
 PreviewWindow::PreviewWindow(QWidget *parent)
     : QWidget(parent)
     , _doc(0)
@@ -62,6 +76,10 @@ PreviewWindow::PreviewWindow(QWidget *parent)
 {
     _ui->setupUi(this);
     _ui->stack->setCurrentWidget(_ui->welcomePage);
+
+    // Configure the menu
+
+    configureMenu();
 
     // We will handle external links since we are *not* a web browser.
 
@@ -75,17 +93,110 @@ PreviewWindow::PreviewWindow(QWidget *parent)
     this->restoreGeometry(settings.value("geometry").toByteArray());
 }
 
+/// Configure the context menus. Each of the pages has a
+/// different context menu.
+void PreviewWindow::configureMenu()
+{
+    // This action stuff makes one wish every C++ API was
+    // a bit like Qt.
+    //
+    // We define reusable actions and register
+    // them with each of the views. Back in the .ui file, the
+    // objects receiving actions have had their contextMenuPolicy
+    // set to "ActionsContextMenu".
+
+    // Create all the menu actions
+
+    // TODO: Open file?
+
+    QAction* copyAction = new QAction(tr("&Copy"), this);
+    copyAction->setShortcut(QKeySequence::Copy);
+    connect(copyAction, SIGNAL(triggered()), this, SLOT(onCopy()));
+
+    QAction* refreshAction = new QAction(tr("&Refresh"), this);
+    refreshAction->setShortcut(QKeySequence::Refresh);
+    connect(refreshAction, SIGNAL(triggered()), this, SLOT(onRefresh()));
+
+    // TODO: Printing.
+
+    QAction* separator = new QAction(this);
+    separator->setSeparator(true);
+
+    QAction* aboutAction = new QAction(tr("&About Previsto"), this);
+    connect(aboutAction, SIGNAL(triggered()), this, SLOT(onAbout()));
+
+    // Assemble the menu for the welcome page:
+
+    _ui->welcomePage->insertAction(0, aboutAction);
+
+    // Assemble the menu for the error page:
+
+    _ui->errorPage->insertAction(0, aboutAction);
+
+    // Assemble the menu for the document view:
+
+    _ui->documentView->insertAction(0, copyAction);
+    _ui->documentView->insertAction(0, refreshAction);
+    _ui->documentView->insertAction(0, separator);
+    _ui->documentView->insertAction(0, aboutAction);
+}
+
+
 PreviewWindow::~PreviewWindow()
 {
     delete _ui;
 }
 
+//// Menu Actions //////////////////////////////////////////////////////////////////////////////////
+
+/// Called when the user activates the "Copy" menu item.
+void PreviewWindow::onCopy()
+{
+    _ui->documentView->triggerPageAction(QWebPage::Copy);
+}
+
+/// Called when the user activates the "Refresh" menu item.
+/// Usually, this is not really needed, but sometimes thing
+/// may go wrong. We fake the current document's url being
+/// dropped again and hope it is enough.
+void PreviewWindow::onRefresh()
+{
+    if (!_doc) {
+        // No document, nothing to refresh...
+        return;
+    }
+
+    QList<QUrl> urls;
+    urls << _doc->inputUrl();
+    emit urlsDropped(urls);
+}
+
+void PreviewWindow::onAbout()
+{
+    AboutWindow aboutWindow(this);
+    aboutWindow.exec();
+}
+
+void PreviewWindow::onSettings()
+{}
+
 //// Document Changes //////////////////////////////////////////////////////////////////////////////
 
+/// Set the document to be displayed.
+///
+/// @param document
+///     The new document that will be displayed. It needs not
+///     be fully loaded yet. We listen to its `ready` and `error`
+///     signals.
 void PreviewWindow::setDocument(QSharedPointer<MarkdownDoc> document)
 {
     if (document == _doc) {
         return;
+    }
+
+    if (_doc) {
+        // Goodbye. We don't want to hear from you again.
+        _doc->disconnect(this);
     }
 
     // We are seeing this document for the first time.
@@ -94,11 +205,15 @@ void PreviewWindow::setDocument(QSharedPointer<MarkdownDoc> document)
     _firstTime = true;
     _ui->stack->setCurrentWidget(_ui->previewPage);
 
+    // The ugly part of using QSharedPointer is that we have to explicitly
+    // retrieve the raw pointer to connect signals.
+
     connect(_doc.data(), SIGNAL(ready()), SLOT(onDocumentReady()));
     connect(_doc.data(), SIGNAL(error(MarkdownDoc::Error)),
             SLOT(onDocumentError(MarkdownDoc::Error)));
 }
 
+/// Triggered when the current document is ready.
 void PreviewWindow::onDocumentReady()
 {
     QPoint currentScroll = _ui->documentView->page()->mainFrame()->scrollPosition();
@@ -135,6 +250,7 @@ void PreviewWindow::onDocumentReady()
     }
 }
 
+/// Triggered when there is an error with the current document.
 void PreviewWindow::onDocumentError(MarkdownDoc::Error cause)
 {
     switch (cause) {
@@ -158,6 +274,11 @@ void PreviewWindow::onDocumentError(MarkdownDoc::Error cause)
 
 //// Webpage Links /////////////////////////////////////////////////////////////////////////////////
 
+/// Triggered when a link on the document is clicked. Internal
+/// links are not handled by this method, however.
+///
+/// @param url
+///     The url of the link that was clicked.
 void PreviewWindow::onWebpageLinkClicked(const QUrl& url)
 {
     // XXX: Shouldn't we give this back to the controller instead?
@@ -197,6 +318,12 @@ void PreviewWindow::dragEnterEvent(QDragEnterEvent* e)
     e->acceptProposedAction();
 }
 
+/// Triggered when the user drops "something" into the preview window
+/// We again inspect to see what it is and if it is an URI List, we
+/// tell the world the news.
+///
+/// @param e
+///     Information about the drop event.
 void PreviewWindow::dropEvent(QDropEvent* e)
 {
     const QMimeData* data = e->mimeData();
@@ -210,6 +337,11 @@ void PreviewWindow::dropEvent(QDropEvent* e)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// Triggered when the window is closed (and the application is about to
+/// quit).
+///
+/// @param e
+///     Information about the close event.
 void PreviewWindow::closeEvent(QCloseEvent* e)
 {
     // Save the window geometry for next time.
