@@ -1,9 +1,10 @@
 #pragma once
 
 #include <QList>
+#include <QMenu>
 #include <QUrl>
-#include <QWidget>
 #include <QSharedPointer>
+#include <QWidget>
 
 #include "markdowndoc.h"
 

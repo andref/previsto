@@ -9,6 +9,8 @@
 #include "ui_previewwindow.h"
 #include "markdowndoc.h"
 #include "previewwindow.h"
+#include "aboutwindow.h"
+
 
 //// Error Messages ////////////////////////////////////////////////////////////////////////////////
 
@@ -117,27 +119,25 @@ void PreviewWindow::configureMenu()
 
     // TODO: Printing.
 
-    QAction* settingsAction = new QAction(tr("&Settings..."), this);
-    connect(settingsAction, SIGNAL(triggered()), this, SLOT(onSettings()));
+    QAction* separator = new QAction(this);
+    separator->setSeparator(true);
 
     QAction* aboutAction = new QAction(tr("&About Previsto"), this);
     connect(aboutAction, SIGNAL(triggered()), this, SLOT(onAbout()));
 
     // Assemble the menu for the welcome page:
 
-    _ui->welcomePage->insertAction(0, settingsAction);
     _ui->welcomePage->insertAction(0, aboutAction);
 
     // Assemble the menu for the error page:
 
-    _ui->errorPage->insertAction(0, settingsAction);
     _ui->errorPage->insertAction(0, aboutAction);
 
     // Assemble the menu for the document view:
 
     _ui->documentView->insertAction(0, copyAction);
     _ui->documentView->insertAction(0, refreshAction);
-    _ui->documentView->insertAction(0, settingsAction);
+    _ui->documentView->insertAction(0, separator);
     _ui->documentView->insertAction(0, aboutAction);
 }
 
@@ -172,7 +172,10 @@ void PreviewWindow::onRefresh()
 }
 
 void PreviewWindow::onAbout()
-{}
+{
+    AboutWindow aboutWindow(this);
+    aboutWindow.exec();
+}
 
 void PreviewWindow::onSettings()
 {}
