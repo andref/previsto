@@ -1,7 +1,7 @@
 QT      += core gui webkit
 TARGET   = previsto
 TEMPLATE = app
-VERSION  = 0.1dev
+VERSION  = 0.2
 
 SOURCES += \
     main.cpp\

@@ -8,6 +8,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
+/// Construct a new application controller. Start it using the `start` method.
+///
+/// @param parent
+///     The owner of this controller.
 AppController::AppController(QObject *parent)
     : QObject(parent)
     , _window(new PreviewWindow())
@@ -19,7 +23,7 @@ AppController::AppController(QObject *parent)
 }
 
 /// Start the application and show the window. If the app was called with a
-/// file as its first argument, the document is loaded.
+/// file as its first argument, the corresponding document is loaded.
 void AppController::start()
 {
     _window->show();

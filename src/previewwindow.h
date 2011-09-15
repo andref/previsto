@@ -43,7 +43,14 @@ private slots:
     void onDocumentReady();
     void onDocumentError(MarkdownDoc::Error cause);
 
+    void onCopy();
+    void onRefresh();
+    void onAbout();
+    void onSettings();
+
 private:
+
+    void configureMenu();
 
     QSharedPointer<MarkdownDoc> _doc;
     Ui::PreviewWindow *_ui;
