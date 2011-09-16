@@ -110,6 +110,8 @@ void PreviewWindow::configureMenu()
     // Create all the menu actions
 
     // TODO: Open file?
+    // TODO: The QWebView comes with actions to print and copy that
+    //       I could reuse.
 
     QAction* copyAction = new QAction(tr("&Copy"), this);
     copyAction->setShortcut(QKeySequence::Copy);
@@ -186,7 +188,7 @@ void PreviewWindow::onPrint()
     // Printing. In FOUR lines. I ♥ Qt.
     // Exporting to PDF is just as easy.
 
-    QPrintDialog printDialog;
+    QPrintDialog printDialog(this);
     if (printDialog.exec() == QDialog::Accepted) {
         _ui->documentView->page()->mainFrame()->print(printDialog.printer());
     }
