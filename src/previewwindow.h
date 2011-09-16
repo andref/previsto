@@ -46,6 +46,7 @@ private slots:
 
     void onCopy();
     void onRefresh();
+    void onPrint();
     void onAbout();
     void onSettings();
 
