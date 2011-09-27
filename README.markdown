@@ -1,4 +1,4 @@
-# Previsto -- A Markdown preview app
+# Previsto: A Markdown preview app
 
 Instead of fiddling with your favorite text editor to
 make it preview [Markdown][1] files, use this app. Just 
