@@ -3,6 +3,8 @@
 #include <QDragEnterEvent>
 #include <QDropEvent>
 #include <QPoint>
+#include <QPrinter>
+#include <QPrintDialog>
 #include <QSettings>
 #include <QWebFrame>
 
@@ -108,6 +110,8 @@ void PreviewWindow::configureMenu()
     // Create all the menu actions
 
     // TODO: Open file?
+    // TODO: The QWebView comes with actions to print and copy that
+    //       I could reuse.
 
     QAction* copyAction = new QAction(tr("&Copy"), this);
     copyAction->setShortcut(QKeySequence::Copy);
@@ -117,7 +121,9 @@ void PreviewWindow::configureMenu()
     refreshAction->setShortcut(QKeySequence::Refresh);
     connect(refreshAction, SIGNAL(triggered()), this, SLOT(onRefresh()));
 
-    // TODO: Printing.
+    QAction* printAction = new QAction(tr("&Print"), this);
+    printAction->setShortcut(QKeySequence::Print);
+    connect(printAction, SIGNAL(triggered()), this, SLOT(onPrint()));
 
     QAction* separator = new QAction(this);
     separator->setSeparator(true);
@@ -137,6 +143,7 @@ void PreviewWindow::configureMenu()
 
     _ui->documentView->insertAction(0, copyAction);
     _ui->documentView->insertAction(0, refreshAction);
+    _ui->documentView->insertAction(0, printAction);
     _ui->documentView->insertAction(0, separator);
     _ui->documentView->insertAction(0, aboutAction);
 }
@@ -169,6 +176,22 @@ void PreviewWindow::onRefresh()
     QList<QUrl> urls;
     urls << _doc->inputUrl();
     emit urlsDropped(urls);
+}
+
+/// Called when the user activates the "Print" menu item.
+void PreviewWindow::onPrint()
+{
+    if (!_doc) {
+        return;
+    }
+
+    // Printing. In FOUR lines. I ♥ Qt.
+    // Exporting to PDF is just as easy.
+
+    QPrintDialog printDialog(this);
+    if (printDialog.exec() == QDialog::Accepted) {
+        _ui->documentView->page()->mainFrame()->print(printDialog.printer());
+    }
 }
 
 void PreviewWindow::onAbout()

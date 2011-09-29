@@ -13,14 +13,23 @@ font-family: 'Helvetica', 'FreeSans', sans-serif;
 font-size: 15px;
 }
 
-p, ul, ol
+p, ul, ol, dl
 {
 margin-bottom: 21px;
 }
 
+dt
+{
+font-weight: bold;
+}
+
+dd
+{
+margin-left: 42px;
+}
+
 li > p
 {
-margin-bottom: 0;
 }
 
 h1, h2, h3, h4, h5, h6
