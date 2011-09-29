@@ -1,3 +1,16 @@
+previsto (0.4) lucid; urgency=low
+
+  * Printing.
+
+ -- André Fillipe O. Silva <andre.fillipe@gmail.com>  Mon, 29 Sep 2011 12:00:00 -0300
+
+previsto (0.3) lucid; urgency=low
+
+  * About box.
+  * Keyboard shortcuts.
+
+ -- André Fillipe O. Silva <andre.fillipe@gmail.com>  Mon, 15 Sep 2011 12:00:00 -0300
+
 previsto (0.2) lucid; urgency=low
 
   * Preserves scroll position in a more intuitive way.

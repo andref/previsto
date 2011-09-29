@@ -12,6 +12,7 @@ list to prove it:
 - Preview updates when the file is saved.
 - Drag files from any program into the window to preview.
 - Open Markdown files from nautilus using the context menu.
+- Print formatted and styled Markdown files.
 
 ## Dependencies
 
